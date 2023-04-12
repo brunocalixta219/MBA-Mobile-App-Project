@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Alert, Button, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native';
+import authService from '../services/auth.service';
 
 export default function LoginPage() {
 
@@ -9,8 +10,9 @@ export default function LoginPage() {
 
     const navigation = useNavigation<any>();
 
-    function signIn() {
-        if (username === 'uedson' && password === 'reis') {
+    async function signIn() {
+        const user = await authService.login(username, password);
+        if (user && user.token) {
             navigation.navigate('Home');
         } else {
             Alert.alert('Login / senha inválido(a)!');

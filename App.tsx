@@ -13,7 +13,7 @@ export default function App() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Acesso" component={LoginPage} />
-                <Stack.Screen name="Home" component={HomePage} />
+                <Stack.Screen name="Home" component={HomePage} options={{ title: 'Auth App' }} />
                 <Stack.Screen name="UserPage" component={UserPage} />
             </Stack.Navigator>
         </NavigationContainer>
