@@ -10,18 +10,19 @@ import userService from '../services/user.service';
 export default function Home() {
 
     const [ users, setUsers ] = React.useState<User[]>([]);
+    
 
     const navigation = useNavigation<any>();
 
     navigation.setOptions({
         headerLeft: () => <Button title="Sair" onPress={() => navigation.goBack() } />,
-        headerRight: () => <Button title="Add" onPress={() => navigation.navigate('UserPage') } />
+        headerRight: () => <Button title="Editar Usuário" onPress={() => navigation.navigate('EditUser') } /> 
     });
 
     function fetchUsers() {
         userService.getList().then(list => setUsers(list)).catch(error => navigation.goBack());
     }
-
+ 
     React.useEffect(() => fetchUsers(), []);
 
     function goToEditUser(user: User) {
@@ -46,6 +47,8 @@ export default function Home() {
 
     return (
         <View style={styles.container}>
+            <Button title="Cadastrar Nova Role" onPress={() => navigation.navigate('NewRole') } />
+            <Text style={styles.userListTitle}>Lista de usuários</Text>
             <FlatList
                 data={users}
                 refreshing={false}
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: 20
     },
     item: {
         height: 50,
@@ -94,4 +98,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         justifyContent: "center",
     },
+    userListTitle: {
+        fontSize: 20,
+        marginTop: 20
+    }
 });

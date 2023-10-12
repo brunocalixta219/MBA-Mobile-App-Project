@@ -4,7 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LoginPage from './src/pages/Login';
 import HomePage from './src/pages/Home';
-import UserPage from './src/pages/EditUser';
+import EditUser from './src/pages/EditUser';
+import NewRole from './src/pages/NewRole';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +15,8 @@ export default function App() {
             <Stack.Navigator>
                 <Stack.Screen name="Acesso" component={LoginPage} />
                 <Stack.Screen name="Home" component={HomePage} options={{ title: 'Auth App' }} />
-                <Stack.Screen name="UserPage" component={UserPage} />
+                <Stack.Screen name="EditUser" component={EditUser} />
+                <Stack.Screen name="NewRole" component={NewRole} options={{ title: 'Cadastrar Role' }}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

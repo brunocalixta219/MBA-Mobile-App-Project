@@ -3,7 +3,7 @@ import userRepository from "./user.repository";
 
 class AuthService {
 
-    private readonly url = 'http://192.168.0.19:3030/auth/login';
+    private readonly url = 'http://localhost:3030/auth/login';
 
     public async login(username: string, password: string) {
         const response = await fetch(this.url, {
