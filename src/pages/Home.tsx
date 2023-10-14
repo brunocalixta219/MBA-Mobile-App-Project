@@ -45,7 +45,7 @@ export default function Home() {
     React.useEffect(() => fetchUsers(), [])
 
     function goToEditUser(user: User) {
-        navigation.navigate('UserPage', { userId: user.id })
+        navigation.navigate('EditUser', { userId: user.id })
     }
 
     function removeUser(userId: number) {
