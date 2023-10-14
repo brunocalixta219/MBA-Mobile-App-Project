@@ -3,7 +3,7 @@ import userRepository from "./user.repository";
 
 class UserService {
 
-    private readonly url = 'http://localhost:3030/users';
+    private readonly url = 'http://10.0.2.2:3030/users';
 
     private async getHeaders() {
         const logged = await userRepository.getLoggedUser();

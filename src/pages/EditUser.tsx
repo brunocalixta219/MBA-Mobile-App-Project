@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Alert, Button, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native';
 import userService from '../services/user.service';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 
 export default function EditUser() {
 
@@ -10,6 +12,14 @@ export default function EditUser() {
     const [ username, setUsername ] = React.useState('');
     const [ password, setPassword ] = React.useState('');
     const [ confirmPassword, setConfirmPassword ] = React.useState('');
+
+    const [open, setOpen] = React.useState(false);
+      const [value, setValue] = React.useState(null);
+      const [items, setItems] = React.useState([
+        {label: 'Admin', value: 'admin'},
+        {label: 'Corno', value: 'corno'}
+      ]);
+
 
     const navigation = useNavigation<any>();
     const route = useRoute();
@@ -77,6 +87,20 @@ export default function EditUser() {
                 />
             </View>
 
+            <View style={{ paddingTop: 10, paddingHorizontal: 20, alignItems: 'flex-start', width: Dimensions.get('screen').width }}>
+            
+                <Text>Role</Text>
+                <DropDownPicker
+                    style={{ paddingTop: 10, paddingHorizontal: 20, alignItems: 'flex-start', width: Dimensions.get('screen').width - 40, zIndex:999}}
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                />
+            </View>
+
             { !id && ( <>
                 <View style={{ paddingTop: 10, paddingHorizontal: 20, alignItems: 'flex-start', width: Dimensions.get('screen').width }}>
                     <Text style={{ fontSize: 20 }}>Senha: </Text>
@@ -96,7 +120,7 @@ export default function EditUser() {
                 </View>
             </> )}
 
-            <View style={{ padding: 20 }}>
+            <View style={{ padding: 20, zIndex:-1, marginTop:50 }}>
                 <Button title=' Salvar ' onPress={save} />
             </View>
 
