@@ -4,5 +4,7 @@ Este repositório contém o código-fonte e os recursos relacionados ao projeto 
 Integrantes:
 
 Bruno Calixta Almeida
+
 Sabrina Midori Assato
+
 Elder Luiz 
