@@ -2,6 +2,10 @@ import React from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Alert, Button, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native';
 import userService from '../services/user.service';
+import DropDownPicker from 'react-native-dropdown-picker';
+import roleService from '../services/role.service';
+import { Role } from '../dto/role';
+
 
 export default function EditUser() {
 
@@ -10,6 +14,24 @@ export default function EditUser() {
     const [ username, setUsername ] = React.useState('');
     const [ password, setPassword ] = React.useState('');
     const [ confirmPassword, setConfirmPassword ] = React.useState('');
+
+    const [open, setOpen] = React.useState(false);
+    const [roles, setRoles] = React.useState(null);
+    const [items, setItems] = React.useState([{}]);
+
+
+    function fetchRoleList() {
+        roleService
+            .getList()
+            .then((list) => {
+                list.forEach(item => {
+                    const newObj = {label:item.description, value:item.name}
+                    setItems(items => [...items, newObj])
+                });
+            })
+            .catch((error) => navigation.goBack())
+    }
+
 
     const navigation = useNavigation<any>();
     const route = useRoute();
@@ -26,10 +48,11 @@ export default function EditUser() {
                     }
                 });
             }
-        } 
+        }
     }
 
     React.useEffect(() => fetchUser(), []);
+    React.useEffect(() => fetchRoleList(), [])
 
     async function save() {
         if (!username || !username.trim()) {
@@ -47,7 +70,7 @@ export default function EditUser() {
                 Alert.alert('A Senha é obrigatória!');
                 return;
             }
-    
+
             if (password !== confirmPassword) {
                 Alert.alert('As Senhas não conferem!');
                 return;
@@ -58,6 +81,18 @@ export default function EditUser() {
                 .catch(error => Alert.alert(error));
         }
     }
+
+   async function update(){
+        const user = {
+            id:id,
+            name:name,
+            username: username,
+            roles: roles
+        }
+        userService.update(user)
+        .then(saved => navigation.goBack())
+        .catch(error => Alert.alert(error));
+   }
 
     return (
         <View style={styles.container}>
@@ -74,6 +109,23 @@ export default function EditUser() {
                 <TextInput
                     style={{ width: Dimensions.get('screen').width - 40, height: 50, borderWidth: 1 }}
                     onChangeText={ value => setName(value) } value={name}
+                />
+            </View>
+
+            <View style={{ paddingTop: 10, paddingHorizontal: 20, alignItems: 'flex-start', width: Dimensions.get('screen').width, zIndex:999 }}>
+
+                <Text>Role</Text>
+                <DropDownPicker
+                    multiple={true}
+                    min={0}
+                    max={5}
+                    style={{ paddingTop: 10, paddingHorizontal: 20, alignItems: 'flex-start', width: Dimensions.get('screen').width - 40, zIndex:999}}
+                    open={open}
+                    value={roles}
+                    items={items.filter(item=> item.label != undefined)}
+                    setOpen={setOpen}
+                    setValue={setRoles}
+                    setItems={setItems}
                 />
             </View>
 
@@ -94,11 +146,18 @@ export default function EditUser() {
                         secureTextEntry
                     />
                 </View>
+                  <View style={{ padding: 20, zIndex:-1, marginTop:50 }}>
+                    <Button title=' Salvar ' onPress={save} />
+                </View>
             </> )}
 
-            <View style={{ padding: 20 }}>
-                <Button title=' Salvar ' onPress={save} />
-            </View>
+            { id ?
+              <View style={{ padding: 20, zIndex:-1, marginTop:50 }}>
+                <Button title=' Atualizar ' onPress={update} />
+              </View>
+              : <></>
+            }
+
 
         </View>
     );
